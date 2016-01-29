@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <title>Test HTML</title>
+	<script src="./jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Test</h1>
+    <form name= 'testFrm'>
+    	''<table>
+    		<tr>
+    			<td>
+					<p>Category</p>
+				</td>
+    			<td>
+					<input type='textbox' id='category' value='Test'></input>
+				</td>
+			</tr>
+
+    		<tr>
+    			<td>
+					<p>Type</p>
+				</td>
+    			<td>
+					<input type='textbox' id='type' value='Test'></input>
+				</td>
+			</tr>
+
+    		<tr>
+    			<td>
+					<p>Description</p>
+				</td>
+    			<td>
+					<input type='textbox' id='desc' value='I am testing'></input>
+				</td>
+			</tr>
+
+    		<tr>
+    			<td>
+					<p>Email</p>
+				</td>
+    			<td>
+					<input type='textbox' id='email' value='c@adp.com'></input>
+				</td>
+			</tr>
+			
+    		<tr>
+    			<td>
+					<p>Affected People</p>
+				</td>
+    			<td>
+					<input type='textbox' id='affectedPeopleCount' value='1'></input>
+				</td>
+			</tr>
+			
+			<tr>
+    			<td>
+					&nbsp;
+				</td>
+    			<td>
+					
+					<button onclick="save(); return false;">Click me</button>
+				</td>
+			</tr>
+			
+    	</table>
+    	
+    				<button onclick="get()">Fetch all incidents</button>
+    	
+    </form>
+  </body>
+  	<script>
+		function save() {
+			
+			try {
+			console.log('save called..');
+			var category = document.getElementById('category').value;
+			console.log('save called category:' + category );
+			var type = document.getElementById('type').value;
+			var desc = document.getElementById('desc').value;
+			var email = document.getElementById('email').value;
+			var affectedPplCnt = document.getElementById('affectedPeopleCount').value;
+			console.log('save called affectedPplCnt:' + affectedPplCnt );
+			
+			saveIncident(category, type, desc, email, affectedPplCnt);
+			} catch (e) {
+				console.log('Error:' + e);
+			}
+		};
+		
+		function saveIncident(category, type, desc, email, affectedPplCnt) {
+			console.log('saveIncident called..');
+			try {
+			url = 'http://localhost:3000/rest/reportIncident';
+ 			$.post(url, {
+        	        'category': category,
+            	    'type': type,
+                	'desc': desc,
+                	'email': email,
+                	'affectedPplCnt': affectedPplCnt,
+            	},
+            	function (data) {
+                	console.log('success:' + data);
+	            }
+    	    ).fail(function(xhr, textStatus) {
+	            	console.log('failure:' + textStatus);
+	        });
+	          
+    	    } catch (e) {
+    	    	console.log("Error:" + e);
+    	    }	
+		};
+	
+		function get() {
+			console.log('get called..');
+			try {
+			url = 'http://localhost:3000/rest/fetchReportedIncident';
+ 			$.get(url, {},
+            	function (data) {
+                	console.log('success:' + data);
+	            }
+    	    ).fail(function() {
+	            	console.log('failure:');
+	        });
+	          
+    	    } catch (e) {
+    	    	console.log("Error:" + e);
+    	    }	
+		};
+	
+	</script>    
+  
+  </html>
